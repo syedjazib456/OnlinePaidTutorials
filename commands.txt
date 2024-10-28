@@ -1,0 +1,6 @@
+Command to add Front End in Your Mern Application:
+
+1- npx create-vite@latest my-app --template react
+2- cd my-app
+3- npm install
+4- npm run dev
