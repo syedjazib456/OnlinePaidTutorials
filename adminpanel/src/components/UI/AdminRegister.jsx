@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import axios from 'axios';
+import axios from 'axios';//multipart/form-data npm install axios
 //About Axios VS Fetch API
 // -- Speed: In most real-world applications, the difference in speed is negligible.
 //           Both Axios and Fetch are efficient for making HTTP requests.

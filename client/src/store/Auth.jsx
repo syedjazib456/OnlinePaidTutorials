@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
     const getCourses =async ()=>{
         try {
-            const response = await fetch('http://localhost:5000/api/data/courses',{
+            const response = await fetch('http://localhost:5000/api/data/frontendcourses',{
             method:'GET'
             });
             if(response.ok){

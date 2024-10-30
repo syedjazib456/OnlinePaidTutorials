@@ -14,6 +14,10 @@ const courseSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    courseimage:{
+        type:String,
+        required:true
+    }
   
 })
 //1. Separation of Concerns

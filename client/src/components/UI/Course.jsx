@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth } from '../../store/Auth';
-
+const baseURL = import.meta.env.VITE_API_URL;
 function Course(){
 
     const {courses} = useAuth();
@@ -10,14 +10,14 @@ return(
     <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3'>
     {
     courses.map((currentElement,index)=>{
-    const {coursename,coursedesc,courseinstruct} = currentElement;
+    const {coursename,coursedesc,courseinstruct,courseimage} = currentElement;
    
 return (
    
     <div className='col my-3'>
     <div className="card h-100 border-2 shadow-lg" key={index}>
     <img
-      src="https://i0.wp.com/ksfaction.com/wp-content/uploads/2023/01/Expert-Faculty.png?fit=1600%2C750&ssl=1"
+      src={`${baseURL}/${courseimage}`}
       className="card-img-top"
       alt="Expert Instructors"
     />
