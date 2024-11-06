@@ -19,7 +19,7 @@ const register = async (req,res)=>{
         }
         
        const userCreate = await User.create({username:name,email:mail,phonenumber:pnum,password:pass})
-       return res.status(201).json({
+       return res.status(201).json({//ok
         msg:userCreate,
         token:await userCreate.generateToken(),
         userId:userCreate._id.toString()

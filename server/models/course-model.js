@@ -14,8 +14,8 @@ const courseSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    courseimage:{
-        type:String,
+    courseimages:{
+        type:[String],
         required:true
     }
   

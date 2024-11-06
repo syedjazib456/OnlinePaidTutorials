@@ -30,7 +30,7 @@ function Home() {
         <div className="carousel-inner">
         <div className="carousel-item active">
             <img height="450"
-              src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="https://i0.wp.com/ksfaction.com/wp-content/uploads/2023/01/Expert-Faculty.png?fit=1600%2C750&ssl=1"
               className="d-block w-100"
               alt="Third slide"
             />
@@ -38,7 +38,7 @@ function Home() {
           </div>
           <div className="carousel-item ">
             <img height="450"
-              src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="https://corp.kaltura.com/wp-content/uploads/2023/08/Flexible-Learning_-Effective-Strategies-Key-Insights.jpg"
               className="d-block w-100"
               alt="First slide"
             />

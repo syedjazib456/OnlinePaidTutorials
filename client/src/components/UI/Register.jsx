@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 
 
 function Register() {
-  const navigate = useNavigate();
+  const nav= useNavigate();
+  
   // object destructuring
   const {storeToken} = useAuth();//token //consumer
   console.log(storeToken);
@@ -33,11 +34,11 @@ function Register() {
 
      try {
       const response = await fetch('http://localhost:5000/api/auth/register',{
-        method:'POST',
+        method:'POST',//Http Protocol
         headers:{
           "Content-Type":"application/json"
         },
-        body:JSON.stringify(user)//JSON Form
+        body:JSON.stringify(user)//JSON Form "name"-> name:""//"name","mail"
         
       })
       console.log(response); 
@@ -45,9 +46,10 @@ function Register() {
       console.log("Response From Server for Registration: ",res_data);//res_data from server
       if(response.ok){
        
-        storeToken(res_data.token);//
+        localStorage.setItem('token',res_data.token);
+        // storeToken(res_data.token);//
         toast.success("Registered Successfully");
-        navigate('/');
+        nav('/');
       }
       else {
         // Handle error if response is not ok

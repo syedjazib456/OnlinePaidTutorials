@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../store/Auth";
-const baseURL = import.meta.env.VITE_API_URL;
+const baseURL = import.meta.env.VITE_API_URL;//localhost
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -31,12 +31,15 @@ function AdminList() {
         }
     };
     const handleDelete = async (id) => {
-        // Optimistically update the state
-        setAdmins((prevAdmins) => prevAdmins.filter(admin => admin._id !== id));
-        toast.success('Admin Deleted Successfully'); // Show success message
+        // Optimistically update the state //UI updation then backend 
+        // Optimistically" in the context of UI updates and programming refers to an approach where the application assumes 
+        // that an action will succeed and updates the interface accordingly,
+        // without waiting for confirmation from the server.
+        setAdmins((prevAdmins) => prevAdmins.filter(admin => admin._id !== id));//103
+        toast.error('Admin Deleted Successfully'); // Show success message
     
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/admindelete/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/admin/admindelete/${id}`, {//:adminid
                 method: 'DELETE',
                 headers: {
                     Authorization: authorizationtoken,
@@ -85,6 +88,7 @@ function AdminList() {
                                 <td>{curradmin.adminname}</td>
                                 <td>{curradmin.adminemail}</td>
                                 <td>
+                                {/* //uploads\\asasj localhost*/}
                                     <img src={`${baseURL}/${curradmin.adminImage}`} alt={curradmin.adminname} className="admin-image" style={{ width: 100, height: 100 }} />
                                 </td>
                                 <td>

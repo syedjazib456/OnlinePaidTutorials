@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from "react";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+
 const baseURL = import.meta.env.VITE_API_URL;
 //About Axios VS Fetch API
 // -- Speed: In most real-world applications, the difference in speed is negligible.
@@ -17,7 +18,7 @@ const baseURL = import.meta.env.VITE_API_URL;
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/Auth";
 import { toast } from 'react-toastify';
-function AdminUpdate(){
+function CourseUpdate(){
     
     //Function use for Navigation
   const navigate = useNavigate(); 
@@ -27,16 +28,15 @@ function AdminUpdate(){
   //checking Token
   console.log(storeAdminToken);
   //Initialize the user variable
-    const [admin,SetAdmin] = useState({
-        name:"",
-        mail:"",
-        pass:"",
-        image: null,
-    });
-
-    const getAdminDatabyId = async () => {
+  const [course,SetCourse] = useState({
+    coursename: "",
+    coursedesc: "",
+    courseinstruct: "",
+    image: null, // For image upload
+  });
+    const getCourseDatabyId = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/update/${params.id}`, {
+            const response = await fetch(`http://localhost:5000/api/data/course/${params.id}`, {
                 method: 'GET',
                 headers: {
                     Authorization: authorizationtoken,
@@ -44,27 +44,27 @@ function AdminUpdate(){
             });
             
             const data = await response.json();
-           console.log();
+          
             if (response.ok) {
-               const fetchAdmin = data.msg; //adminname
-                SetAdmin({
-                    name: fetchAdmin.adminname || "",
-                    mail: fetchAdmin.adminemail || "",
-                    pass: "", // default password field
-                    image:fetchAdmin.adminImage || "",
-                }); // Assuming data is an array of admins
+               const fetchCourse = data.msg; 
+                SetCourse({
+                    coursename: fetchCourse.coursename || "",
+                    coursedesc: fetchCourse.coursedesc || "",
+                    courseinstruct: fetchCourse.courseinstruct, // 
+                    image:fetchCourse.courseimage || "",
+                }); // Assuming data is an array of coursess
                 console.log(data.msg);
             } else {
-                toast.error(data.msg || 'Failed to fetch admins');
+                toast.error(data.msg || 'Failed to fetch course');
             }
         } catch (error) {
             console.error(error);
-            toast.error('An error occurred while fetching admin data');
+            toast.error('An error occurred while fetching course data');
         }
     };
     
     useEffect(()=>{
-     getAdminDatabyId();
+     getCourseDatabyId();
     //  console.log(admin);
     },[])
 
@@ -75,16 +75,16 @@ function AdminUpdate(){
     let value = e.target.value;
     let files = e.target.files;
     if(name==='image'){
-    SetAdmin({
+    SetCourse({
       
-        ...admin,//Use Spread Operator to saving the Previous values 
+        ...course,//Use Spread Operator to saving the Previous values 
         image:files[0] || null
     });
   }
   else{
-    SetAdmin({
+    SetCourse({
       
-      ...admin,//Use Spread Operator to saving the Previous values 
+      ...course,//Use Spread Operator to saving the Previous values 
      [name]:value
   });
   }
@@ -96,21 +96,19 @@ function AdminUpdate(){
     // Yes, using FormData is essential when you want to send data as multipart/form-data,
     // especially when you're working with file uploads in a web application
     const formDataToSend = new FormData();
-    formDataToSend.append('name', admin.name);
-    formDataToSend.append('mail', admin.mail);
+    formDataToSend.append('coursename', course.coursename);
+    formDataToSend.append('coursedesc', course.coursedesc);
+    formDataToSend.append('courseinstruct', course.courseinstruct);
+
    
-
-    if(admin.pass){
-        formDataToSend.append('pass', admin.pass);
-    }
-    if (admin.image) {
-        formDataToSend.append('image', admin.image);
+    if (course.image) {
+        formDataToSend.append('image',course.image);
     }
 
-    console.log(admin);
+    console.log(course);
 
     try {
-      const response = await axios.patch(`http://localhost:5000/api/admin/updatedata/${params.id}`,formDataToSend,{
+      const response = await axios.patch(`http://localhost:5000/api/data/courseupdate/${params.id}`,formDataToSend,{
        
        headers:{
          Authorization: authorizationtoken,
@@ -121,17 +119,17 @@ function AdminUpdate(){
 
       });
       const res_data = await response.data;
-      console.log("Response From Server for Admin Registeration: ",res_data);
+      console.log("Response From Server for Course Insertion ",res_data);
       if(response.status===200){
-        const { isAdmin } = res_data;
-        // Store the user data (including isAdmin) in state or context
-        localStorage.setItem('isAdmin', isAdmin);
+      
+       
+    
         console.log(res_data);
-        console.log(isAdmin);
+      
         console.log("Form Data Being Sent:", Array.from(formDataToSend.entries()));
 
         toast.success('Updated Successfully');
-        navigate('/adminlist')
+        navigate('/viewcourses');
       }
    
       console.log(response);
@@ -152,34 +150,46 @@ return (
     <div className="col-12">
     <div className="card border-2 shadow-lg">
             
-                <h1 style={{ color: 'blue'}}><i>Update Admin</i></h1>
+                <h1 style={{ color: 'blue'}}><i>Update course</i></h1>
                 <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                        <label htmlFor="email">Admin Name</label>
+                        <label htmlFor="email">Course Name</label>
                         <input
                             type="text"
                             id="email"
-                            name="name"
-                            value={admin.name}
+                            name="coursename"
+                            value={course.coursename}
                             onChange={handleinput}
                             required
                             className="form-control"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="email">Admin Email</label>
+                        <label htmlFor="email">Course Description</label>
                         <input
-                            type="email"
+                            type="text"
                             id="email"
-                            name="mail"
-                            value={admin.mail}
+                            name="coursedesc"
+                            value={course.coursedesc}
                             onChange={handleinput}
                             required
                             className="form-control"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="password">Admin Profile</label>
+                        <label htmlFor="email">Course Instructor</label>
+                        <input
+                            type="text"
+                            id="email"
+                            name="courseinstruct"
+                            value={course.courseinstruct}
+                            onChange={handleinput}
+                            required
+                            className="form-control"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Course Image</label>
                         <input
                             type="file"
                             id="password"
@@ -190,19 +200,8 @@ return (
                              className="form-control"
                         />
                     </div>
-                    {admin.image && <img src={typeof admin.image === 'string' ? `${baseURL}/${admin.image}` : URL.createObjectURL(admin.image)} width={100} height={100} alt="Preview" />}
-                    <div className="form-group">
-                        <label htmlFor="password">Admin Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="pass"
-                            value={admin.pass}
-                            onChange={handleinput}
-                            className="form-control"
-                        />
-                    </div>
-                    
+                    {course.image && <img src={typeof course.image === 'string' ? `${baseURL}/${course.image}` : URL.createObjectURL(course.image)} width={100} height={100} alt="Preview" />}
+                    <br/>
                     <button type="submit" className="admin-login-button m-3">Update</button>
                     <NavLink></NavLink>
                 </form>
@@ -215,4 +214,4 @@ return (
 }
 
 
-export default AdminUpdate;
+export default CourseUpdate;

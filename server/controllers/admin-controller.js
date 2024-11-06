@@ -84,7 +84,7 @@ const fetchadmin = async (req,res)=>{
   }
   const deleteAdmin = async (req,res)=>{
     try {
-      const id = req.params.adminid;
+      const id = req.params.adminid;//3532
 
      const response = await Admin.deleteOne({_id:id});
      

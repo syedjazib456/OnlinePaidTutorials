@@ -15,6 +15,7 @@ import ProtectedRoute from './store/ProtectedRoute';
 import AdminLogout from './components/UI/AdminLogout';
 import AddCourse from './components/UI/AddCourses';
 import CourseList from './components/UI/ViewCourses';
+import CourseUpdate from './components/UI/CourseUpdate';
 function App() {
   const router = createBrowserRouter([
    
@@ -76,6 +77,15 @@ function App() {
           (
             <ProtectedRoute>
              <AddCourse/>
+            </ProtectedRoute>
+          ),
+      },
+      {
+        path:'courseupdate/:id/edit',
+        element:
+          (
+            <ProtectedRoute>
+             <CourseUpdate/>
             </ProtectedRoute>
           ),
       },

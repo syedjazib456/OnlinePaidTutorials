@@ -3,14 +3,16 @@ import { useAuth } from "../../store/Auth";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 function AddCourse() {
   const { authorizationtoken } = useAuth();
   const navigate = useNavigate();
+  
   const [course, setCourse] = useState({
     coursename: "",
     coursedesc: "",
     courseinstruct: "",
-    image: null, // For image upload
+    images: [], // For multiple image uploads
   });
 
   const handleChange = (e) => {
@@ -19,17 +21,22 @@ function AddCourse() {
   };
 
   const handleFileChange = (e) => {
-    setCourse((prev) => ({ ...prev, image: e.target.files[0] }));
+    const files = Array.from(e.target.files); // Convert the file list to an array
+    setCourse((prev) => ({ ...prev, images: files })); // Store all selected files in the 'images' array
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    
+
     formData.append("coursename", course.coursename);
     formData.append("coursedesc", course.coursedesc);
     formData.append("courseinstruct", course.courseinstruct);
-    formData.append("image", course.image); // Append the image
+
+    // Append all selected images to the FormData
+    course.images.forEach((image, index) => {
+      formData.append("images", image); // 'images' is the field name that the server expects
+    });
 
     try {
       const response = await axios.post("http://localhost:5000/api/data/coursereg", formData, {
@@ -89,14 +96,15 @@ function AddCourse() {
                 />
               </div>
               <div>
-                <label htmlFor="image">Upload Image:</label>
+                <label htmlFor="images">Upload Images:</label>
                 <input
                   type="file"
-                  id="image"
-                  name="image"
+                  id="images"
+                  name="images"
                   accept="image/*"
                   onChange={handleFileChange}
                   className="form-control"
+                  multiple // Allow multiple files
                   required
                 />
               </div>
