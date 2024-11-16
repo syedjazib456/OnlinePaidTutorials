@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const baseURL = import.meta.env.VITE_API_URL;
+
 function CourseList() {
   const { authorizationtoken } = useAuth();
   const [courses, setCourses] = useState([]);
@@ -14,7 +15,7 @@ function CourseList() {
 
   const handleDelete = async (id) => {
     // Optimistically update the state
-    setCourses((prevAdmins) => prevAdmins.filter(course => course._id !== id));
+    setCourses((prevCourses) => prevCourses.filter(course => course._id !== id));
     toast.error('Course Deleted Successfully'); // Show success message
 
     try {
@@ -29,14 +30,14 @@ function CourseList() {
 
         if (!response.ok) {
             // If the response isn't ok, roll back the optimistic update
-            setCourses((prevAdmins) => [...prevAdmins, { _id: id }]); // You may want to fetch the admin's full data
+            setCourses((prevCourses) => [...prevCourses, { _id: id }]); // You may want to fetch the admin's full data
             toast.error(data.msg || 'Failed to delete Course'); // Show error message
         }
     } catch (error) {
         console.error(error);
         toast.error('An error occurred while deleting the Course');
         // Rollback optimistic update if necessary
-        // setAdmins((prevAdmins) => [...prevAdmins, { _id: id }]); // This may need more info to restore the admin
+        // setCourses((prevCourses) => [...prevCourses, { _id: id }]); // This may need more info to restore the admin
     }
 };
 
@@ -70,40 +71,44 @@ function CourseList() {
 
   return (
     <React.Fragment>
-    <button className="btn btn-primary mb-3" onClick={() => navigate('/addcourse')}>
-    Add Course
-  </button>
-    <div className="table-responsive">
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Course Name</th>
-            <th>Description</th>
-            <th>Instructor</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map(course => (
-            <tr key={course._id}>
-              <td>
-                <img
-                  src={`${baseURL}/${course.courseimage}`} // Adjust path based on your server
-                  alt={course.coursename}
-                  style={{ width: '100px', height: 'auto' }} // Adjust image size as needed
-                />
-              </td>
-              <td>{course.coursename}</td>
-              <td>{course.coursedesc}</td>
-              <td>{course.courseinstruct}</td>
-              <NavLink className="mx-4 btn btn-primary" to={`/courseupdate/${course._id}/edit`}>Edit</NavLink>
-              <button className="mx-4 btn btn-danger" onClick={() => handleDelete(course._id)}>Delete</button>
+      <button className="btn btn-primary mb-3" onClick={() => navigate('/addcourse')}>
+        Add Course
+      </button>
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Images</th>
+              <th>Course Name</th>
+              <th>Description</th>
+              <th>Instructor</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {courses.map(course => (
+              <tr key={course._id}>
+                <td>
+                  {/* Loop through the courseimages array and render each image */}
+                  {course.courseimages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={`${baseURL}/${image}`} // Assuming the images are hosted on the server
+                      alt={`${course.coursename} image ${index + 1}`}
+                      style={{ width: '70px', height: '70px', marginRight: '5px' }} // Adjust size and margin as needed
+                    />
+                  ))}
+                </td>
+                <td>{course.coursename}</td>
+                <td>{course.coursedesc}</td>
+                <td>{course.courseinstruct}</td>
+                <NavLink className="mx-4 btn btn-primary" to={`/courseupdate/${course._id}/edit`}>Edit</NavLink>
+                <button className="mx-4 btn btn-danger" onClick={() => handleDelete(course._id)}>Delete</button>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </React.Fragment>
   );
 }

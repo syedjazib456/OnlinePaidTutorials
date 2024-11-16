@@ -1,14 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 //Provider
 // Create Auth Context
-const AuthContext = createContext();
+const AuthContext = createContext();//Provider
 // It provides a way to share values (like user authentication status, theme settings, or any other global data)
 //  across the entire component tree without the need for props drilling
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {//Object Destructuring
     // Initialize token from localStorage
-    const [token, setToken] = useState(() => localStorage.getItem("token"));  //**** */
+   //*
+    const [token, setToken] = useState(() => localStorage.getItem("token"));  //**** *///hooks
 
-    const [admintoken,setAdminToken] =useState(()=>localStorage.getItem("adminToken"));
+    const [admintoken,setAdminToken] =useState(()=>localStorage.getItem("adminToken"));///Application token:asfjakjbka
     const [user,SetUser] = useState("");
 
     const [courses,SetCourses] = useState("");
@@ -17,9 +18,9 @@ export const AuthProvider = ({ children }) => {
     // !!undefined becomes false
     // !!some string" becomes true
     const isAdminLoggedIn = !!admintoken;
-    // Function to store token
+    // Function to store token **
     const storeToken = (serverToken) => { //**** */
-        setToken(serverToken); // Update state
+        setToken(serverToken); // Update state//token  storeToken(res_data.token)
         localStorage.setItem('token', serverToken); // Store in localStorage
     };
     const storeAdminToken = (serverToken) => { //**** */
@@ -87,7 +88,7 @@ export const AuthProvider = ({ children }) => {
 
 
      //For Authentication
-
+   
     return ( //**** */
         <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser ,user,courses,storeAdminToken,isAdminLoggedIn,logoutAdmin}}>
             {children} {/* Here {children} means components that consume these functions */}
@@ -100,12 +101,12 @@ export const AuthProvider = ({ children }) => {
   
 };
 //Consumer that uses the Provider Auth Context
-export const useAuth = () => {//**** */
+export const useAuth = () => {//**** */ consumer
     const authContextValue = useContext(AuthContext);
     
     if (!authContextValue) {
         throw new Error("Auth Provider not used as a Parent in main.jsx");
     }
     
-    return authContextValue;
+    return authContextValue;//storeToken isLogged
 };

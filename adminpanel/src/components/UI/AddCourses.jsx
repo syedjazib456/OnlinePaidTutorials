@@ -19,10 +19,19 @@ function AddCourse() {
     const { name, value } = e.target;
     setCourse((prev) => ({ ...prev, [name]: value }));
   };
-
+  //Previous 
+  // const handleFileChange = (e) => {
+  //   const files = Array.from(e.target.files); // Convert the file list to an array
+  //   console.log(files);
+  //   setCourse((prev) => ({ ...prev, images: files })); // Store all selected files in the 'images' array
+  // };
+  //Updated
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files); // Convert the file list to an array
-    setCourse((prev) => ({ ...prev, images: files })); // Store all selected files in the 'images' array
+    const newFiles = Array.from(e.target.files); // Convert FileList to an array
+    setCourse((prev) => ({
+      ...prev,
+      images: [...prev.images, ...newFiles], // Append new files to the existing array
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -104,10 +113,23 @@ function AddCourse() {
                   accept="image/*"
                   onChange={handleFileChange}
                   className="form-control"
-                  multiple // Allow multiple files
+                  multiple// Allow multiple files
                   required
                 />
               </div>
+              {/* Display previews of selected images */}
+        <div className="image-previews">
+          {course.images.length > 0 &&
+             Array.from(course.images).map((image, index) => (
+            <div key={index} className="image-preview">
+              <img
+                src={URL.createObjectURL(image)}
+                alt={`preview-${index}`}
+                style={{ width: '100px', height: '100px', margin: '5px' }}
+              />
+            </div>
+          ))}
+      </div>
               <button type="submit">Add Course</button>
             </form>
           </div>

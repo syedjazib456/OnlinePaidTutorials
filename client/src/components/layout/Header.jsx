@@ -4,7 +4,7 @@ import { useAuth } from "../../store/Auth";
 
 
 function Header() {
-  const { isLoggedIn, logoutUser,user } = useAuth();
+  const { isLoggedIn, logoutUser } = useAuth();
   console.log(isLoggedIn);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -47,7 +47,7 @@ function Header() {
                   onClick={(e) => {
                 
                     logoutUser(); // Call logout function
-                    user="";
+                    user="";//x
                   }}
                 >
                   Logout

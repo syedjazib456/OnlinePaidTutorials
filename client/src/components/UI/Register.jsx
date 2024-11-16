@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/Auth";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify";//npm install 
 
 
 
 function Register() {
-  const nav= useNavigate();
+  const navigate= useNavigate();
   
   // object destructuring
   const {storeToken} = useAuth();//token //consumer
@@ -46,10 +46,10 @@ function Register() {
       console.log("Response From Server for Registration: ",res_data);//res_data from server
       if(response.ok){
        
-        localStorage.setItem('token',res_data.token);
-        // storeToken(res_data.token);//
+        // localStorage.setItem('token',res_data.token);//Context API Functional Component (Parent)
+        storeToken(res_data.token);//
         toast.success("Registered Successfully");
-        nav('/');
+        navigate('/');
       }
       else {
         // Handle error if response is not ok
