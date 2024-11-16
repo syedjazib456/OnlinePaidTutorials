@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {//Object Destructuring
     // Initialize token from localStorage
    //*
     const [token, setToken] = useState(() => localStorage.getItem("token"));  //**** *///hooks
-
+    const userauthtoken = `Bearer ${token}`;
     const [admintoken,setAdminToken] =useState(()=>localStorage.getItem("adminToken"));///Application token:asfjakjbka
     const [user,SetUser] = useState("");
 
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {//Object Destructuring
      //For Authentication
    
     return ( //**** */
-        <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser ,user,courses,storeAdminToken,isAdminLoggedIn,logoutAdmin}}>
+        <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser ,user,userauthtoken,courses,storeAdminToken,isAdminLoggedIn,logoutAdmin}}>
             {children} {/* Here {children} means components that consume these functions */}
         </AuthContext.Provider>
     );

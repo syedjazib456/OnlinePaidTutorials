@@ -6,6 +6,7 @@ const router = require('./router/auth-router');
 const connectDB = require('./utils/db');
 const courseroute = require('./router/course-router');
 const adminroute = require('./router/admin-router');
+const contactroute = require('./router/contact-router');
 const path = require('path');
 const corsOption={
     origin:'http://localhost:5173',
@@ -19,7 +20,7 @@ const corsOption={
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors(corsOption));
 app.use(express.json());//delegate
-
+app.use('/api/auth',contactroute);
 app.use('/api/auth',router);
 app.use('/api/data',courseroute);
 app.use('/api/admin',adminroute);

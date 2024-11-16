@@ -7,11 +7,11 @@ function Contact(){
     const navigate = useNavigate();
     
     //getting user Authenticated Data using Context API
-    const {user} = useAuth();
+    const {user,userauthtoken} = useAuth();
      //for setting authenticated user data
      const [userData,SetUserData] = useState(true);
 
-   
+  
     const [usercontact,SetContactUser] = useState({
         name:"",
         mail:"",
@@ -37,35 +37,41 @@ function Contact(){
         let name = e.target.name;
         let value = e.target.value;
     
-        SetUser({
-            ...user,
+        SetContactUser({
+            ...usercontact,
             [name]:value
         });
         }
 
         const handleSubmit = async (e)=>{
             e.preventDefault();
-            console.log(user)
+            if (!userauthtoken) {
+              toast.error("User is not authenticated.");
+              return;
+             }
+            console.log(usercontact)
        
             try {
              const response = await fetch('http://localhost:5000/api/auth/contact',{
                method:'POST',
                headers:{
+                  Authorization:userauthtoken,
                  "Content-Type":"application/json"
                },
-               body:JSON.stringify(user)//JSON Form
+               body:JSON.stringify(usercontact)//JSON Form
                
              })
              if(response.ok){
                const res_data = await response.json();
                console.log("Response From Server for Contact: ",res_data);//res_data from server
               //  storeToken(res_data.token);//
-               toast.success("Your Message has been Sent Successfully, We will contact you soon");
+               toast.success(res_data.msg);
                navigate('/');
              }
              else {
                // Handle error if response is not ok
                const errorData = await response.json();
+               toast.error(errorData.msg);
                console.error("Register Error Response:", errorData);
            }
              console.log(response); 

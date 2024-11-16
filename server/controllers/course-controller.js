@@ -80,47 +80,41 @@ const updateacoursebyId = async (req, res, next) => {
     const updatedCourseData = {
       coursename: req.body.coursename,
       coursedesc: req.body.coursedesc,
-      courseinstruct: req.body.courseinstruct
-      // Add other fields as necessary
+      courseinstruct: req.body.courseinstruct,
+      // Initialize courseimage array
+      courseimages: [], 
     };
 
-    // Verify that the admin exists
+    // Verify that the course exists
     const course = await Course.findById(id);
     if (!course) {
       return res.status(404).json({ msg: "Course not found." });
     }
 
+    // If new images are uploaded, handle image deletion for old ones
+    if (req.files && req.files.length > 0) {
+      const imagePaths = req.files.map(file => file.path); // Get paths of uploaded images
+      updatedCourseData.courseimages = imagePaths; // Update with new image paths
 
-    const imagePath = req.file ? req.file.path : null;
-
-    // Handle image deletion if a new image is uploaded
-    if (imagePath) {
-      const oldImagePath = path.join(__dirname, '..', course.courseimage); // Use admin.image for the old image filename
-      console.log("Old image path:", oldImagePath);
-
-      fs.access(oldImagePath, fs.constants.F_OK, (err) => {
-        if (!err) {
-          fs.unlink(oldImagePath, (unlinkErr) => {
-            if (unlinkErr) {
-              console.error("Failed to delete old image:", unlinkErr);
-            } else {
-              console.log("Old image deleted successfully.");
-            }
-          });
-        } else {
-          console.warn("Old image does not exist, skipping deletion.");
-        }
+      // Delete old images from disk
+      course.courseimages.forEach((oldImagePath) => {
+        const fullOldImagePath = path.join(__dirname, '..', oldImagePath);
+        fs.access(fullOldImagePath, fs.constants.F_OK, (err) => {
+          if (!err) {
+            fs.unlink(fullOldImagePath, (unlinkErr) => {
+              if (unlinkErr) {
+                console.error("Failed to delete old image:", unlinkErr);
+              } else {
+                console.log("Old image deleted successfully.");
+              }
+            });
+          } else {
+            console.warn("Old image does not exist, skipping deletion.");
+          }
+        });
       });
-      updatedCourseData.coursename = updatedCourseData.coursename;
-      updatedCourseData.coursedesc = updatedCourseData.coursedesc;
-      updatedCourseData.courseinstruct = updatedCourseData.courseinstruct;
-
-      updatedCourseData.courseimage = imagePath; // Update with new image path
     } else {
-      updatedCourseData.coursename = updatedCourseData.coursename;
-      updatedCourseData.coursedesc = updatedCourseData.coursedesc;
-      updatedCourseData.courseinstruct = updatedCourseData.courseinstruct;
-      updatedCourseData.courseimage = course.courseimage;
+      updatedCourseData.courseimages = course.courseimages; // Keep existing images if no new ones are uploaded
     }
 
     const response = await Course.updateOne({ _id: id }, { $set: updatedCourseData });
@@ -136,4 +130,5 @@ const updateacoursebyId = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = { courses, addCourse, deleteCourse, getcoursebyId, updateacoursebyId };

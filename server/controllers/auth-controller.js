@@ -1,5 +1,6 @@
 //A List of Controllers
 const User = require('../models/user-model');//model
+const Contact = require('../models/contact-model');
 const bcrypt = require('bcryptjs');
 const home = async (req,res)=>{
  try{
@@ -72,4 +73,40 @@ try {
     console.log(`Error from the user Route ${error}`);
 }
 }
-module.exports = {home,register,login,usertokencheck};
+
+
+const contact = async (req, res) => {
+  try {
+    console.log("Incoming Contact Data:", req.body);
+
+    // Destructure request body
+    const { name, mail, message } = req.body;
+
+    // Validate input
+    if (!name || !mail || !message) {
+      return res.status(400).json({ msg: "All fields are required." });
+    }
+
+    // Create and save contact message in the database
+    const newContact = await Contact.create({ name:name, email:mail, usermessage:message });
+
+    return res.status(201).json({
+      msg: "Message Sent successfully.",
+      contactId: newContact._id.toString(),
+    });
+  } catch (error) {
+    console.error("Error during contact form submission:", error);
+
+    // Handle validation errors
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ msg: error.message });
+    }
+
+    // Handle other server errors
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+
+
+module.exports = {home,register,login,usertokencheck,contact};
