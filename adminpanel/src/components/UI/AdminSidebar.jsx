@@ -63,9 +63,9 @@ function AdminSidebar() {
           <i className="fas fa-stream"></i>
           <span>View Courses</span>
         </NavLink>
-        <NavLink to="/events">
+        <NavLink to="/addcoursedetails">
           <i className="fas fa-calendar"></i>
-          <span>Events</span>
+          <span>Course Details</span>
         </NavLink>
         <NavLink to="/about">
           <i className="far fa-question-circle"></i>

@@ -19,5 +19,6 @@ router.route('/courseupdate/:courseid').patch(upload.array('images',10),adminaut
 router.route('/course/details').post(authmiddleware,courseDetails.addCourseDetails); // To add course details
 // **New route to get course details**
 router.route('/course/:id/details').get(courseDetails.getCourseWithDetails); // To get course with details
-
+// Add or update course details
+router.route('/details').post(courseDetails.addOrUpdateCourseDetails);
 module.exports = router;
