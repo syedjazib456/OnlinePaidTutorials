@@ -15,6 +15,10 @@ import Dashboard from './components/Admin/Dashboard';
 import AdminRegister from './components/Admin/AdminRegister';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminList from './components/Admin/AdminList';
+import CourseDetails from './components/UI/CourseDetails';
+import Subscribe from './components/UI/Subscribe';
+import SubscriptionStatus from './components/UI/SubscriptionStatus';
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -53,6 +57,18 @@ function App() {
           {
             path:'/courses',
             element:<Course/>
+          },
+          {
+            path:'/courses/:id/',
+            element:<CourseDetails/>
+          },
+          {
+            path:'/subscribe',
+            element:<Subscribe/>
+          },
+          {
+            path:'/subscription-status',
+            element:<SubscriptionStatus/>
           },
           
         ],

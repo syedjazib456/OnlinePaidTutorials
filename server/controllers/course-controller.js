@@ -131,4 +131,4 @@ const updateacoursebyId = async (req, res, next) => {
   }
 };
 
-module.exports = { courses, addCourse, deleteCourse, getcoursebyId, updateacoursebyId };
+module.exports = { courses, addCourse, deleteCourse, getcoursebyId, updateacoursebyId};

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function AddCourse() {
   const { authorizationtoken } = useAuth();
   const navigate = useNavigate();
-  
+
   const [course, setCourse] = useState({
     coursename: "",
     coursedesc: "",
@@ -33,7 +33,13 @@ function AddCourse() {
       images: [...prev.images, ...newFiles], // Append new files to the existing array
     }));
   };
-
+  // Remove image
+  const removeImage = (index) => {
+    setCourse((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -118,18 +124,25 @@ function AddCourse() {
                 />
               </div>
               {/* Display previews of selected images */}
-        <div className="image-previews">
-          {course.images.length > 0 &&
-             Array.from(course.images).map((image, index) => (
-            <div key={index} className="image-preview">
-              <img
-                src={URL.createObjectURL(image)}
-                alt={`preview-${index}`}
-                style={{ width: '100px', height: '100px', margin: '5px' }}
-              />
-            </div>
-          ))}
-      </div>
+              <div className="image-previews">
+                {course.images.length > 0 &&
+                  Array.from(course.images).map((image, index) => (
+                    <div key={index} className="image-preview">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`preview-${index}`}
+                        style={{ width: '100px', height: '100px', margin: '5px' }}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={() => removeImage(index)}
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+              </div>
               <button type="submit">Add Course</button>
             </form>
           </div>

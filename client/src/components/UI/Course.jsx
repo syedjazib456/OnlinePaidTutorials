@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../store/Auth';
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import './course.css';
+
 const baseURL = import.meta.env.VITE_API_URL;
 
 function Course() {
@@ -10,7 +12,7 @@ function Course() {
     <div className="container my-4">
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
         {courses.map((currentElement, index) => {
-          const { coursename, coursedesc, courseinstruct, courseimages } = currentElement;
+          const { _id, coursename, coursedesc, courseinstruct, courseimages } = currentElement;  // Make sure to destructure _id
 
           return (
             <div className="col my-3" key={index}>
@@ -22,7 +24,11 @@ function Course() {
                   <h5 className="card-title text-warning">{coursename}</h5>
                   <p className="card-text text-secondary">{coursedesc}</p>
                   <p className="card-text text-dark">{courseinstruct}</p>
-                  <a href="#" className="btn btn-warning">Explore Courses</a>
+
+                  {/* Link to Course Details page with the course id */}
+                  <Link to={`/courses/${_id}`} className="btn btn-warning">
+                    Explore Courses
+                  </Link>
                 </div>
               </div>
             </div>
@@ -34,7 +40,6 @@ function Course() {
 }
 
 function ImageCarousel({ courseimages, coursename }) {
-  // State for the active image index
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const handleTabClick = (index) => {
@@ -43,22 +48,22 @@ function ImageCarousel({ courseimages, coursename }) {
 
   return (
     <div className="card-img-container">
-      {/* Displaying active image with fixed aspect ratio but full visibility */}
+      {/* Displaying active image */}
       <div className="image-main-container">
         <img
           src={`${baseURL}/${courseimages[activeImageIndex]}`}
           alt={`${coursename} image ${activeImageIndex + 1}`}
           className="img-fluid"
           style={{
-            width: '100%', // Ensure the image width is always 100% of its container
-            height: 'auto', // Height adjusts to maintain aspect ratio
-            objectFit: 'contain', // Ensure the whole image fits without cropping
-            maxHeight: '300px', // Set a max height so images don't stretch too much
+            width: '100%',
+            height: 'auto',
+            objectFit: 'contain',
+            maxHeight: '300px',
           }}
         />
       </div>
 
-      {/* Image tabs (clickable navigation) */}
+      {/* Image tabs */}
       <div className="image-tabs mt-2 d-flex justify-content-center">
         {courseimages.map((image, index) => (
           <div
@@ -82,7 +87,7 @@ function ImageCarousel({ courseimages, coursename }) {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover', // Ensure thumbnail images are cropped to fit
+                objectFit: 'cover',
                 borderRadius: '5px',
               }}
             />
