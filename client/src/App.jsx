@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css'
+import './App.css';
 import Register from './components/UI/Register';
 import { createBrowserRouter } from 'react-router-dom';
 import AppLayout from './components/layout/AppLayout';
@@ -18,87 +18,48 @@ import AdminList from './components/Admin/AdminList';
 import CourseDetails from './components/UI/CourseDetails';
 import Subscribe from './components/UI/Subscribe';
 import SubscriptionStatus from './components/UI/SubscriptionStatus';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('your-stripe-publishable-key');
 
 function App() {
+  
   const router = createBrowserRouter([
     {
-        path:'/',
-        element:<AppLayout/>,
-
-        children:[ //child route's
-          {
-            path:'/',
-            element:<Home/>
-          },
-          {
-            path:'/home',
-            element:<Home/>
-          },
-          {
-            path:'/register',
-            element:<Register/>
-          },
-          {
-            path:'/signin',
-            element:<SignIn/>
-          },
-          {
-            path:'/contact',
-            element:<Contact/>
-          },
-          {
-            path:'/about',
-            element:<About/>
-          },
-          {
-            path:'/logout',
-            element:<Logout/>
-          },
-          {
-            path:'/courses',
-            element:<Course/>
-          },
-          {
-            path:'/courses/:id/',
-            element:<CourseDetails/>
-          },
-          {
-            path:'/subscribe',
-            element:<Subscribe/>
-          },
-          {
-            path:'/subscription-status',
-            element:<SubscriptionStatus/>
-          },
-          
+        path:'/', 
+        element:<AppLayout />,
+        children:[
+          { path:'/', element:<Home /> },
+          { path:'/home', element:<Home /> },
+          { path:'/register', element:<Register /> },
+          { path:'/signin', element:<SignIn /> },
+          { path:'/contact', element:<Contact /> },
+          { path:'/about', element:<About /> },
+          { path:'/logout', element:<Logout /> },
+          { path:'/courses', element:<Course /> },
+          { path:'/courses/:id/', element:<CourseDetails /> },
+          { path:'/subscribe', element:<Subscribe /> },
+          { path:'/subscriptionstatus', element:<SubscriptionStatus /> },
         ],
-  
     },
-  {
-    path:'/admin',
-    element:<AdminLayout/>,
-    children:[
-      {
-        path:'adminlogin',
-        element:<AdminLogin/>
-      },
-      {
-        path:'adminregister',
-        element:<AdminRegister/>
-      },
-      {
-        path:'admindashboard',
-        element:<Dashboard/>
-      },
-      {
-        path:'adminlist',
-        element:<AdminList/>
-      }
-    ]
-  }
-   
- ]);
-return <RouterProvider router={router}/>
+    {
+      path:'/admin',
+      element:<AdminLayout />,
+      children:[
+        { path:'adminlogin', element:<AdminLogin /> },
+        { path:'adminregister', element:<AdminRegister /> },
+        { path:'admindashboard', element:<Dashboard /> },
+        { path:'adminlist', element:<AdminList /> }
+      ]
+    }
+  ]);
+
+  return (
+    // <Elements stripe={stripePromise}>
+      <RouterProvider router={router} />
+    // </Elements>
+  );
 }
 
-export default App
+export default App;

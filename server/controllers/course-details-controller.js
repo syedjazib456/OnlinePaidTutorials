@@ -22,7 +22,9 @@ const addCourseDetails = async (req, res) => {
 
 const getCourseWithDetails = async (req, res) => {
     try {
-        const id  = req.params.id;
+        const id = req.params.id;
+
+        // Fetch course and course details
         const course = await Course.findById(id);
         const courseDetails = await CourseDetails.findOne({ courseId: id });
 
@@ -30,11 +32,23 @@ const getCourseWithDetails = async (req, res) => {
             return res.status(404).json({ message: "Course or details not found" });
         }
 
-        res.status(200).json({ course, courseDetails });
+        // Combine course and course details into a single object
+        const response = {
+            ...course.toObject(),
+            ...courseDetails.toObject(),
+        };
+
+        // Optional: Remove duplicate `id` fields if necessary
+        delete response._id; // Only if you don't want duplicate _id fields
+        delete response.courseId; // Already represented as _id from Course
+
+        res.status(200).json(response);
     } catch (err) {
+        console.error("Error fetching course data:", err);
         res.status(500).json({ message: "Error fetching course data", error: err.message });
     }
 };
+
 const addOrUpdateCourseDetails = async (req, res) => {
     const { courseId, price, detailedDescription, isPublished } = req.body;
 

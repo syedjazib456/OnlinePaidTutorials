@@ -26,9 +26,7 @@ function Header() {
             <li className="nav-item">
               <NavLink className="nav-link" to="/home">Home</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/services">Services</NavLink>
-            </li>
+           
             <li className="nav-item">
               <NavLink className="nav-link" to="/about">About</NavLink>
             </li>
@@ -40,6 +38,16 @@ function Header() {
             </li>
            
             {isLoggedIn ? (
+              <>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/subscriptionstatus"
+                
+                >
+                 Subscription Status
+                </NavLink>
+              </li>
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
@@ -53,6 +61,8 @@ function Header() {
                   Logout
                 </NavLink>
               </li>
+           
+              </>
             ) : (
               <>
                 <li className="nav-item">
