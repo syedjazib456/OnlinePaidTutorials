@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem("token"));
     const [admintoken, setAdminToken] = useState(() => localStorage.getItem("adminToken"));
     const [user, setUser] = useState("");
-    const [courses, setCourses] = useState("");
+    const [courses, setCourses] = useState([]);
     const [subscription, setSubscription] = useState(null); // New state for subscription
     const [isLoadingSubscription, setIsLoadingSubscription] = useState(true); // Loading state for subscription
 
@@ -94,9 +94,10 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             userAuthentication();
-            getCourses();
+            
             fetchSubscription();
         }
+        getCourses();
     }, [token]);
 
     return (
