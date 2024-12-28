@@ -11,7 +11,14 @@ const paymentroute = require('./router/payment-router');
 const subscriptionroute = require('./router/subscription-router');
 const path = require('path');
 const corsOption={
-    origin:'http://localhost:5173',
+    origin:function (origin, callback) {
+        if (!origin || origin.startsWith('http://localhost')) {
+            // Allow requests from any localhost port or no origin (e.g., server-side calls)
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods:'GET,POST,PUT,DELETE,PATCH,HEAD',
     credentials:true
 }
